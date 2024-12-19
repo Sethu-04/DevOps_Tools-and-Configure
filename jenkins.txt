@@ -1,2 +1,19 @@
-Jenkins Tool - Instal and Configure
+1) To install Java 17 on Amazon Linux:
 
+    sudo dnf update -y
+		sudo dnf install java-17-amazon-corretto -y
+		java -version
+
+2) Jenkins Tool - Instal and Configure 
+
+$ sudo apt update
+$ sudo apt install openjdk-17-jre-headless -y
+$ vi jenkins.sh ---> Paste the below commands in the file ---> 
+
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
+sudo apt-get install jenkins -y
