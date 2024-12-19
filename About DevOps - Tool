@@ -1,0 +1,16 @@
+SonarQube - Continous inspection of code quality
+
+-> SonarQube is a open source platform
+-> Which Provide static code analysis and code quality management
+-> Helps for Developer and Development team to identify and fix the codes issues
+-> Analysis Source code for various metric including bugs, vulnerability, code smells & code duptlication
+-> Provide detailed report with actionable insight
+
+Two Major Activities
+. Code quality check ---> In the source code where the issue is available , by generating repor
+. code Coverage ---> while running the test code how much of code is covered
+                ---> 80% of code - Good
+
+
+
+
