@@ -1,14 +1,35 @@
-1) To install Java 17 on Amazon Linux:
+1) To install Java 17 on Amazon:
 
+ I) Linux
     sudo dnf update -y
 		sudo dnf install java-17-amazon-corretto -y
 		java -version
+II) Ubuntu
+    sudo apt update 
+    sudo apt install openjdk-17-jre-headless -y
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 2) Jenkins Tool - Instal and Configure 
 
+By creating a file by using command vi <file name> then press "i" and paste the given comments below as per the Opertaing system. after paste press "q" and type ':wq' . After give ls if file is create or not, then we want to execute the command give the permission to execute the file by "sudo chmod +x <filename>. after give execte commad for file to install jenkins by ./filename
+
+I) Linux
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+sudo yum upgrade
+sudo dnf install java-17-amazon-corretto -y
+sudo yum install jenkins -y
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
+sudo systemctl status jenkins
 $ sudo apt update
 $ sudo apt install openjdk-17-jre-headless -y
 $ vi jenkins.sh ---> Paste the below commands in the file ---> 
+
+II) Ubuntu
 
 sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
   https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
@@ -17,3 +38,175 @@ echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
   /etc/apt/sources.list.d/jenkins.list > /dev/null
 sudo apt-get update
 sudo apt-get install jenkins -y
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+3) SonaQube Install
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Docker tool -Install and configure
+
+I) Ubuntu
+install command
+sudo apt-get install docker.io
+
+Permission Commmand
+sudo chmod 666 /var/run/docker.sock
+
+Docker commands install sonarqube
+docker run -d --name sonarqube -p 9000:9000 sonarqube:lts-community
+
+docker run ---> run a container
+-d ---> detached mode
+--name <container name(any)> running container name
+-p 9000:9000 port mapping of sonarqube
+sonarqube:lts-community ---> image of running container
+
+"docker images" to see the image of the conatainer
+"docker ps" to see the name of the container
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pipeline {
+    agent any
+
+    tools {
+        maven 'maven-17'
+        jdk 'jdk17'
+        // Remove the sonarQube line if it still causes issues
+    }
+
+    environment {
+        SCANNER_HOME = tool 'sonar-17'
+        DOCKERHUB_USERNAME = 'sethu041220'  // Set this directly to your Docker Hub username
+        DOCKER_IMAGE = "${DOCKERHUB_USERNAME}/spotify-app:latest"
+    }
+
+    stages {
+        stage('Git Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Sethu-04/SonarQube-Project-Kastro.git'
+            }
+        }
+
+        stage('Compile') {
+            steps {
+                sh "mvn compile"
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh "mvn test"
+            }
+        }
+
+        stage('Sonar Analysis') {
+            steps {
+                withSonarQubeEnv('sonar-server') {
+                    sh "$SCANNER_HOME/bin/sonar-17 -Dsonar.projectName=Sethu -Dsonar.projectKey=SethuKey -Dsonar.java.binaries=target"
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh "mvn package"
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                script {
+                    // Building Docker Image
+                    sh "docker build -t $DOCKER_IMAGE ."
+                }
+            }
+        }
+
+        stage('Docker Push to DockerHub') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                        echo "Docker Hub Username: ${DOCKERHUB_USERNAME}"  // Check the username
+                        echo "Docker Image: ${DOCKER_IMAGE}"  // Check the image
+                        sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}"
+                        sh "docker push $DOCKER_IMAGE"
+                    }
+                }
+            }
+        }
+
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    // Stop any existing container with the same name
+                    sh "docker stop spotify-app || true && docker rm spotify-app || true"
+                    
+                    // Running the container
+                    sh "docker run -d --name spotify-app -p 5555:5555 $DOCKER_IMAGE"
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning up workspace...'
+            cleanWs()  // Clean up the workspace after the build
+        }
+    }
+}
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
