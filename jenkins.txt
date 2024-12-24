@@ -51,6 +51,20 @@ jenkins ALL=(ALL) NOPASSWD: /bin/cp
 paste the command above mentioned after give 
 ctrl+O and ctrl+X then press enter
 
+
+     <server>
+      <id>maven-releases</id>
+      <username>admin</username>
+      <password>sethu</password>
+     </server>
+
+     <server>
+      <id>maven-snapshots</id>
+      <username>admin</username>
+      <password>sethu</password>
+     </server>
+
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 3) Apache Tomacat installation
 
@@ -173,7 +187,26 @@ sudo su
 
 docker --version ---> You can see the docker version
 
+Lets setup Nexus using Docker image
+docker run -d --name nexus3 -p 8081:8081 sonatype/nexus3
 
+docker ps ---> you can see the container running
+
+Open Port number 8081 for VM
+
+docker exec -it ContainerID /bin/bash
+ContainerID can see when give the command of docker ps
+ls ---> You can see the nexus related files ---> 
+cd sonatype-work/ ---> 
+cd nexus3/ ---> 
+You can see 'admin.password' file ---> 
+cat admin.password ---> Copy the password, dont copy 'bash-4.4' --->
+Goto the nexus connected tab in browser --->
+
+sign in as username admin
+password you copy an the admin.password
+
+Disable anonymous success 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
