@@ -7,7 +7,7 @@
 II) Ubuntu
     sudo apt update 
     sudo apt install openjdk-17-jre-headless -y
-
+    java -version
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 2) Jenkins Tool - Instal and Configure 
@@ -39,8 +39,70 @@ echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
 sudo apt-get update
 sudo apt-get install jenkins -y
 
+
+
+
+After creating a pipeline we must give the some line that are in below paste in the extreme below the line of command
+sudo visudo
+
+Note: #Add the following line at the end of the file, assuming the Jenkins user is 'jenkins'
+jenkins ALL=(ALL) NOPASSWD: /bin/cp
+
+paste the command above mentioned after give 
+ctrl+O and ctrl+X then press enter
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-3) SonaQube Install
+3) Apache Tomacat installation
+
+https://tomcat.apache.org/download-90.cgi  -  Visit these link
+
+right click and copy the link address of (tar.gz)
+
+sudo wget <tar.gz url>
+ls
+file in red colour
+tar -xvf <extraded tar file>
+
+ls
+cd bin/
+./starup.sh/
+
+change port number in conf directory in server.xml file 
+vi server.xml file --> scroll down to connector port change 8080 to 9090 press esc :wq
+Note: whenever we change the conf file we must shutdown the tomcat and restart tomcat
+
+go to webapps 
+in tha cd manager
+cd META-INF
+vi context.xml
+
+press "I" and change in below on the "allow=".*"/>"
+
+go to comf folder open by <vi apache.tomcat.xml>
+scroll below before the </tomcat-users> paste the below content
+
+With out manager-script
+<role rolename="manager-gui" />
+<user username="tomcat" password="tomcat" roles="manager-gui" />
+<role rolename="admin-gui" />  
+<user username="admin" password="admin" roles="manager-gui,admin-gui"/>
+
+With manager-script
+<role rolename="manager-gui" />
+<user username="tomcat" password="tomcat" roles="manager-gui" />
+<role rolename="admin-gui" />  
+<role rolename="manager-script" />
+<user username="admin" password="admin" roles="manager-gui,admin-gui,manager-script"/>
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+4) SonaQube Install
 
 
 
