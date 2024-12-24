@@ -6,6 +6,62 @@ Git - Git Hub
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Java installation in server 
+Linux 
+    sudo dnf update -y
+		sudo dnf install java-17-amazon-corretto -y
+		java -version
+Ubuntu 
+    sudo apt update
+    sudo apt install openjdk-17-jre-headless -y
+    java --version
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Jenkins Installation
+
+create a file vi <filename>.sh
+
+paste the below command on insert 
+
+Linux  
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+sudo yum upgrade
+sudo dnf install java-17-amazon-corretto -y
+sudo yum install jenkins -y
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
+sudo systemctl status jenkins
+
+
+Ubuntu 
+
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
+sudo apt-get install jenkins -y
+
+ press esc and :wq to save and exit the file
+give ls
+if file in green colour is ready to execute no in green colour we must give permission for execute
+sudo chmod +x <filename>.sh
+./<filenameL.sh --> execute command
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 SonarQube - Continous inspection of code quality
 
 -> SonarQube is a open source platform
@@ -18,6 +74,28 @@ Two Major Activities
 . Code quality check ---> In the source code where the issue is available , by generating repor
 . code Coverage ---> while running the test code how much of code is covered
                 ---> 80% of code - Good
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Tomcat Installation
+
+wget < tar file of apache tomcat > --> sudo wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.98/bin/apache-tomcat-9.0.98.tar.gz.sha512
+tar -xvf <file we download>
+ls -> cd bin -> ./startup.sh -> 
+To change port number - go to --> cd conf --> vi server.xml --> connector port la port no 8080 to 9090 change after cd .. --> 
+(note: when ever change in conf file we must shutdown and start the tomacat in bin
+
+configuring the Users in Tomcat
+---------------------------------------------
+we need to edit the tomcat-users.xml to configure the users. 
+The "tomcat-users.xml" file is available in "conf" folder
+
+paste the given below on scroll down to end and paste it before </tomcat-users>
+
+<role rolename="manager-gui" />
+<user username="tomcat" password="tomcat" roles="manager-gui" />
+<role rolename="admin-gui" />  
+<role rolename="manager-script" />
+<user username="admin" password="admin" roles="manager-gui,admin-gui,manager-script"/>
 
 
 
