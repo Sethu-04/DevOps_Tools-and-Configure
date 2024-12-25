@@ -25,9 +25,6 @@ sudo yum install jenkins -y
 sudo systemctl enable jenkins
 sudo systemctl start jenkins
 sudo systemctl status jenkins
-$ sudo apt update
-$ sudo apt install openjdk-17-jre-headless -y
-$ vi jenkins.sh ---> Paste the below commands in the file ---> 
 
 II) Ubuntu
 
