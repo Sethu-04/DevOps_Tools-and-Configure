@@ -198,6 +198,20 @@ docker --version ---> You can see the docker version
 
 Lets setup Nexus using Docker image
 docker run -d --name nexus3 -p 8081:8081 sonatype/nexus3
+docker run -d --name=<nameofcontainer> -P -v <pathoftheVM>:<Pathof container> continaer
+
+-d ---> detached file
+--name= ---> unique name to give the container
+-P ---> port number automatically they make (or) -p ---> port number we have to give like (-p 8090:80) inthat 80 is defauld port number
+
+Container like HTTPD, Tomcat, Nginx
+
+httpd===> /usr/local/apache2/htdocs/
+tomcat===> /usr/local/tomcat/webpps/
+nginx===> /usr/share/nginx/html/
+
+These are the default path of the container which deponds upon the what we want at real time scenario.
+
 
 docker ps ---> you can see the container running
 
