@@ -229,6 +229,15 @@ sign in as username admin
 password you copy an the admin.password
 
 Disable anonymous success 
+
+
+Installing DOcker-Compose in ec2 instance
+
+curl -SL https://github.com/docker/compose/releases/download/v2.13.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compos
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose --version
+
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
