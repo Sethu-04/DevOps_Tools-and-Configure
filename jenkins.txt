@@ -237,6 +237,35 @@ curl -SL https://github.com/docker/compose/releases/download/v2.13.0/docker-comp
 sudo chmod +x /usr/local/bin/docker-compose
 docker-compose --version
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Kubernetes Installation
+
+sudo su -
+
+Install Containerd
+
+sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installContainerd.sh -P /tmp
+sudo bash /tmp/installContainerd.sh
+sudo systemctl restart containerd.service
+
+kubeadm: the command to bootstrap the cluster.
+kubelet: the component that runs on all of the machines in your cluster and does things like starting pods and containers.
+kubectl: the command line util to talk to your cluster.
+
+
+# sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installK8S.sh -P /tmp
+
+# sudo bash /tmp/installK8S.sh
+
+## Initialize kubernetes Master Node
+
+   # sudo kubeadm init --ignore-preflight-errors=all
+
+
+
+
+
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
