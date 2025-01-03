@@ -241,6 +241,8 @@ docker-compose --version
 
 Kubernetes Installation
 
+MASTER NODE
+
 sudo su -
 
 Install Containerd
@@ -254,15 +256,48 @@ kubelet: the component that runs on all of the machines in your cluster and does
 kubectl: the command line util to talk to your cluster.
 
 
-# sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installK8S.sh -P /tmp
-
-# sudo bash /tmp/installK8S.sh
+sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installK8S.sh -P /tmp
+sudo bash /tmp/installK8S.sh
 
 ## Initialize kubernetes Master Node
 
-   # sudo kubeadm init --ignore-preflight-errors=all
+sudo kubeadm init --ignore-preflight-errors=all
 
+Execute the below commands to setup kubectl and apiserver communication
 
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+## install networking driver -- Weave/flannel/canal/calico etc...
+
+## below installs calico networking driver
+
+kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/calico.yaml
+
+# Validate:  kubectl get nodes
+
+WORKER NODE
+
+# sudo su -
+sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installContainerd.sh -P /tmp
+sudo bash /tmp/installContainerd.sh
+sudo systemctl restart containerd.service
+
+## Install kubeadm,kubelet,kubectl
+
+sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installK8S.sh -P /tmp
+sudo bash /tmp/installK8S.sh
+
+## Run Below on Master Node to get join token
+
+#  kubeadm token create --print-join-command
+
+    copy the kubeadm join token from master & run it on all worker nodes
+
+On Master node:
+
+# kubectl get nodes
 
 
 
